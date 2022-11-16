@@ -5,6 +5,7 @@ import chronometer
 from prompt import Prompt
 from logger_txt import Logger
 from logger_email import MessageFactory, Dispatcher
+from automation_script.automatic_commit import AutomaticCommit
 
 
 class ExperimentManager:
@@ -80,7 +81,7 @@ class ExperimentManager:
                 pool.map(Prompt().execute_command, exp)
                 dones_experiments.extend(exp)
 
-                
+
 
             except KeyboardInterrupt as e:
                 pass
