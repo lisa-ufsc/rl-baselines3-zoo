@@ -4,5 +4,6 @@ import os
 
 class Prompt:
 
-    def execute_command(self, command):
+    @staticmethod
+    def execute_command(command):
         os.system(command)

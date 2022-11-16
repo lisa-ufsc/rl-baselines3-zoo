@@ -1,18 +1,54 @@
 
 from multiprocessing import Pool
 
-import chronometer
-from prompt import Prompt
-from logger_txt import Logger
-from logger_email import MessageFactory, Dispatcher
+from automation_script.chronometer import Chronometer
+from automation_script.prompt import Prompt
+from automation_script.logger_txt import Logger
+from automation_script.logger_email import MessageFactory, Dispatcher
 from automation_script.automatic_commit import AutomaticCommit
 
 
 class ExperimentManager:
 
-    def __init__(self, experiments: list, processes):
+    def __init__(self, email, key, msg, repo_url, experiments, processes):
+        self.__email = email
+        self.__key = key
+        self.__msg = msg
+        self.__repo_url = repo_url
         self.__experiments = experiments[:]
         self.__processes = processes
+
+    @property
+    def email(self):
+        return self.__email
+
+    @email.setter
+    def email(self, new_email):
+        self.__email = new_email
+
+    @property
+    def key(self):
+        return self.__key
+
+    @key.setter
+    def key(self, new_key):
+        self.__key = new_key
+
+    @property
+    def msg(self):
+        return self.__msg
+
+    @msg.setter
+    def msg(self, new_msg):
+        self.__msg = new_msg
+
+    @property
+    def repo_url(self):
+        return self.__repo_url
+
+    @repo_url.setter
+    def repo_url(self, new_repo_url):
+        self.__repo_url = new_repo_url
 
     @property
     def processes(self):
@@ -46,53 +82,66 @@ class ExperimentManager:
             experiments.append(aux)
         return experiments
 
-    def _notify(self):
-        sender = "hermes.deus.da.riqueza@gmail.com"
-        receiver = "hermes.deus.da.riqueza@gmail.com"
-        subject = "Semana 7"
-        password = "key"
+    def _notify_by_email(self, msg):
+        sender = self.email
+        receiver = self.email
+        subject = self.msg
+        password = self.key
+        body = msg
 
-        body = f"""<body>
-                    <h1>Email automatico dos experimentos</h1>
-                    <p><b>Experimento feito:</b> {command}</p>
-                    <p><b>Início:</b> {c.start_d}s</p>
-                    <p><b>Fim:</b> {c.end_d}s</p>
-                    <p><b>Tempo de execução:</b> {c.delta_d()}s</p>
-                """
-        if c.delta_s() < 600:
-            subject += " - Problema"
-            body += """<p><font color="#FF0000"><b>Aviso:</b> Simulação possivelmente terminou com falha</p></font>"""
-        body += """</body>"""
         message = MessageFactory().create(sender, receiver, subject, body)
         Dispatcher(message, password).send()
 
-    def run_experiments(self) -> None:
-        c = chronometer.Chronometer()
-        l = Logger("./logs", "logs.txt")
+    def _notify_by_txt(self, msg):
+        logger = Logger("./logs", "logs.txt")
+        logger.recorder(msg)
+
+    def run_experiments(self):
+        chronometer = Chronometer()
         
-        c.start_counting()
         experiments = self._convert_experiments(self.experiments)
         dones_experiments = []
+
+        chronometer.start_counting()
         for exp in experiments:
             try:
-
+                c = Chronometer()
                 processes = int(self.processes)
-                pool = Pool(processes=processes)   
-                pool.map(Prompt().execute_command, exp)
+
+                c.start_counting()
+                pool = Pool(processes=processes)
+                pool.map(Prompt.execute_command, exp)
+                c.finish_counting()
+
                 dones_experiments.extend(exp)
-
-
+                percentual = len(dones_experiments)/len(self.experiments)
+                msg_email = f"""<body>
+                                    <p><b>Início:</b> {c.start_d}s</p>
+                                    <p><b>Fim:</b> {c.end_d}s</p>
+                                    <p><b>Tempo de execução:</b> {c.delta_d()}</p>
+                                    <p><b>Percentual:</b>{percentual}</p>
+                                </body>"""
+                self._notify_by_email(msg_email)
 
             except KeyboardInterrupt as e:
                 pass
 
-        c.finish_counting()
+        chronometer.finish_counting()
 
-        l.recorder( "Experimentos finalizados!")
-        l.recorder(f" - Incio: {c.start_d}")
-        l.recorder(f" - Fim: {c.end_d}")
-        l.recorder(f" - Tempo de execução: {c.delta_d()}")
-        l.recorder(f" - Número de comandos: {len(self.experiments)}")
-        l.recorder(f" - Comandos executados:")
-        [l.recorder(f"      {experiment}") for experiment in self.experiments]
-        l.recorder("")
+        msg_txt = f"""Experimentos finalizados!\n
+                    - Incio: {chronometer.start_d}\n
+                    - Fim: {chronometer.end_d}\n
+                    - Tempo de execução: {chronometer.delta_d()}\n
+                    - Número de comandos: {len(self.experiments)}\n
+                    - Comandos executados:\n
+                    {self.experiments}\n"""
+        self._notify_by_txt(msg_txt)
+
+        msg_email = f"""<body>
+                            <p><b>Início:</b> {chronometer.start_d}s</p>
+                            <p><b>Fim:</b> {chronometer.end_d}s</p>
+                            <p><b>Tempo de execução:</b> {chronometer.delta_d()}</p>
+                            <p><b>Número de comandos:</b>{len(self.experiments)}</p>
+                        </body>"""
+        self._notify_by_email(msg_email)
+        AutomaticCommit(self.msg, "master", self.repo_url).update()
