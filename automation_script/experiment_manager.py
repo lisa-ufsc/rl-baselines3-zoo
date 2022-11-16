@@ -32,14 +32,20 @@ class ExperimentManager:
     def add_experiments(self, experiments):
         self.__experiments.extend(experiments)
 
-    def _execute_experiment(self, command):
-        c = chronometer.Chronometer()
-        p = Prompt()
+    def _convert_experiments(self, experiments, num=10):
+        experiments = []
+        aux = []
+        for experiment in experiments:
+            if num == 0:
+                experiments.append(aux)
+                aux = []
+            aux.append(experiment)
+            num -= 1
+        if num != 0:
+            experiments.append(aux)
+        return experiments
 
-        c.start_counting()
-        p.execute_command(command)
-        c.finish_counting()
-
+    def _notify(self):
         sender = "hermes.deus.da.riqueza@gmail.com"
         receiver = "hermes.deus.da.riqueza@gmail.com"
         subject = "Semana 7"
@@ -64,12 +70,21 @@ class ExperimentManager:
         l = Logger("./logs", "logs.txt")
         
         c.start_counting()
-        try:
-            processes = int(self.processes)
-            pool = Pool(processes=processes)   
-            pool.map(self._execute_experiment, self.experiments)
-        except KeyboardInterrupt as e:
-            print(e)
+        experiments = self._convert_experiments(self.experiments)
+        dones_experiments = []
+        for exp in experiments:
+            try:
+
+                processes = int(self.processes)
+                pool = Pool(processes=processes)   
+                pool.map(Prompt().execute_command, exp)
+                dones_experiments.extend(exp)
+
+                
+
+            except KeyboardInterrupt as e:
+                pass
+
         c.finish_counting()
 
         l.recorder( "Experimentos finalizados!")

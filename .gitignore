@@ -27,3 +27,5 @@ keys/
 .cache
 *.lprof
 *.prof
+
+git_test.py
