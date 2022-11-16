@@ -43,7 +43,7 @@ class ExperimentManager:
         sender = "hermes.deus.da.riqueza@gmail.com"
         receiver = "hermes.deus.da.riqueza@gmail.com"
         subject = "Semana 7"
-        password = "rhcistvdgwmkvraz"
+        password = "key"
 
         body = f"""<body>
                     <h1>Email automatico dos experimentos</h1>
