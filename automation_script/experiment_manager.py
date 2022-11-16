@@ -70,17 +70,19 @@ class ExperimentManager:
         self.__experiments.extend(experiments)
 
     def _convert_experiments(self, experiments, num=10):
-        experiments = []
+        e = []
         aux = []
+        cont = num
         for experiment in experiments:
-            if num == 0:
-                experiments.append(aux)
+            if cont == 0:
+                e.append(aux)
                 aux = []
+                cont = num
+                
             aux.append(experiment)
-            num -= 1
-        if num != 0:
-            experiments.append(aux)
-        return experiments
+            cont -= 1
+        e.append(aux)
+        return e
 
     def _notify_by_email(self, msg):
         sender = self.email
@@ -93,7 +95,7 @@ class ExperimentManager:
         Dispatcher(message, password).send()
 
     def _notify_by_txt(self, msg):
-        logger = Logger("./logs", "logs.txt")
+        logger = Logger("./automation_script/logs", "logs.txt")
         logger.recorder(msg)
 
     def run_experiments(self):
@@ -101,7 +103,8 @@ class ExperimentManager:
         
         experiments = self._convert_experiments(self.experiments)
         dones_experiments = []
-
+        print(len(experiments))
+        [print(experiment, "\n\n") for experiment in experiments]
         chronometer.start_counting()
         for exp in experiments:
             try:
@@ -110,11 +113,11 @@ class ExperimentManager:
 
                 c.start_counting()
                 pool = Pool(processes=processes)
-                pool.map(Prompt.execute_command, exp)
+                pool.map(Prompt().execute_command, exp)
                 c.finish_counting()
 
                 dones_experiments.extend(exp)
-                percentual = len(dones_experiments)/len(self.experiments)
+                percentual = 100 * len(dones_experiments)/len(self.experiments)
                 msg_email = f"""<body>
                                     <p><b>Início:</b> {c.start_d}s</p>
                                     <p><b>Fim:</b> {c.end_d}s</p>
@@ -128,13 +131,13 @@ class ExperimentManager:
 
         chronometer.finish_counting()
 
-        msg_txt = f"""Experimentos finalizados!\n
-                    - Incio: {chronometer.start_d}\n
-                    - Fim: {chronometer.end_d}\n
-                    - Tempo de execução: {chronometer.delta_d()}\n
-                    - Número de comandos: {len(self.experiments)}\n
-                    - Comandos executados:\n
-                    {self.experiments}\n"""
+        msg_txt = f"""Experimentos finalizados!
+    - Incio: {chronometer.start_d}
+    - Fim: {chronometer.end_d}
+    - Tempo de execução: {chronometer.delta_d()}
+    - Número de comandos: {len(self.experiments)}
+    - Comandos executados:
+    {self.experiments}\n"""
         self._notify_by_txt(msg_txt)
 
         msg_email = f"""<body>
