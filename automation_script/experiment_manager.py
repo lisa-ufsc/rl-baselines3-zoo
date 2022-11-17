@@ -123,10 +123,10 @@ class ExperimentManager:
         chronometer.finish_counting()
 
         msg_txt = f"""Experimentos finalizados!
-    - Incio: {chronometer.start_d}
+    - Inicio: {chronometer.start_d}
     - Fim: {chronometer.end_d}
-    - Tempo de execução: {chronometer.delta_d()}
-    - Número de comandos: {len(self.experiments)}
+    - Tempo de execucao: {chronometer.delta_d()}
+    - Numero de comandos: {len(self.experiments)}
     - Comandos executados:"""
         for command in self.experiments:
             msg_txt += f"      {command}\n"
