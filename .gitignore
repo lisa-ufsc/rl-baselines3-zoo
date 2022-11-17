@@ -18,6 +18,7 @@ runs
 hub
 *.mp4
 *.json
+env/
 
 # Setuptools distribution and build folders.
 /dist/

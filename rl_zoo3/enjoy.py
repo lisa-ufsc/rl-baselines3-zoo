@@ -268,7 +268,7 @@ def enjoy():  # noqa: C901
 
     if args.verbose > 0 and len(episode_lengths) > 0:
         print(f"Mean episode length: {np.mean(episode_lengths):.2f} +/- {np.std(episode_lengths):.2f}")
-
+    print(log_dir)
     env.close()
 
 
