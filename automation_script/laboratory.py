@@ -47,7 +47,7 @@ class Laboratory:
                 commands.append(hopper_command)
 
         self.__experiment_manager = ExperimentManager(args.email, args.key,
-                                                      args.subject, commands, processes)
+                                                      " ".join(args.subject.split("_")), commands, processes)
 
     def run(self):
         self.to_set_up()
