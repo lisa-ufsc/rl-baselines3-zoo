@@ -10,11 +10,10 @@ from automation_script.automatic_commit import AutomaticCommit
 
 class ExperimentManager:
 
-    def __init__(self, email, key, msg, repo_url, experiments, processes):
+    def __init__(self, email, key, msg, experiments, processes):
         self.__email = email
         self.__key = key
         self.__msg = msg
-        self.__repo_url = repo_url
         self.__experiments = experiments[:]
         self.__processes = processes
 
@@ -41,14 +40,6 @@ class ExperimentManager:
     @msg.setter
     def msg(self, new_msg):
         self.__msg = new_msg
-
-    @property
-    def repo_url(self):
-        return self.__repo_url
-
-    @repo_url.setter
-    def repo_url(self, new_repo_url):
-        self.__repo_url = new_repo_url
 
     @property
     def processes(self):
@@ -147,4 +138,4 @@ class ExperimentManager:
                             <p><b>Número de comandos:</b>{len(self.experiments)}</p>
                         </body>"""
         self._notify_by_email(msg_email)
-        AutomaticCommit(self.msg, "master", self.repo_url).update()
+        AutomaticCommit(self.msg).update()

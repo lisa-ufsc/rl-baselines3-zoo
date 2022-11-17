@@ -16,7 +16,6 @@ class Laboratory:
 
         parser.add_argument('-e', '--email', action='store', type=str, required=True, help='Email for notification')
         parser.add_argument('-k', '--key', action='store', type=str, required=True, help='Key to enter email')
-        parser.add_argument('-g', '--github', action='store', type=str, default="https://github.com/AHVG/rl-baselines3-zoo", help='Github URL for update repo')
         parser.add_argument('-s', '--subject', action='store', type=str, default="Experimentos", help='Subject for email')
 
         args = parser.parse_args()
@@ -48,8 +47,7 @@ class Laboratory:
                 commands.append(hopper_command)
 
         self.__experiment_manager = ExperimentManager(args.email, args.key,
-                                                      args.subject, args.github,
-                                                      commands, processes)
+                                                      args.subject, commands, processes)
 
     def run(self):
         self.to_set_up()
