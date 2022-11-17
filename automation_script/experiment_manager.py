@@ -127,8 +127,9 @@ class ExperimentManager:
     - Fim: {chronometer.end_d}
     - Tempo de execução: {chronometer.delta_d()}
     - Número de comandos: {len(self.experiments)}
-    - Comandos executados:
-    {self.experiments}\n"""
+    - Comandos executados:"""
+        for command in self.experiments:
+            msg_txt += f"      {command}\n"
         self._notify_by_txt(msg_txt)
 
         msg_email = f"""<body>
