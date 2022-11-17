@@ -31,15 +31,15 @@ class Laboratory:
             for n in n_steps:
 
                 builder = CommandBuilder("python train.py", "AntBulletEnv-v0", "tqc", s, n,
-                                        "../experiments/exploration", "../experiments/exploration/tensorboard")
+                                        "experiments/exploration", "experiments/exploration/tensorboard")
                 ant_command = CommandBuilderDirector(builder).generate()
 
                 builder = CommandBuilder("python train.py", "HopperBulletEnv-v0", "tqc", s, n,
-                                        "../experiments/exploration", "../experiments/exploration/tensorboard")
+                                        "experiments/exploration", "experiments/exploration/tensorboard")
                 hopper_command = CommandBuilderDirector(builder).generate()
 
                 builder = CommandBuilder("python train.py", "HalfCheetahBulletEnv-v0", "tqc", s, n,
-                                        "../experiments/exploration", "../experiments/exploration/tensorboard")
+                                        "experiments/exploration", "experiments/exploration/tensorboard")
                 half_command = CommandBuilderDirector(builder).generate()
 
                 commands.append(ant_command)
