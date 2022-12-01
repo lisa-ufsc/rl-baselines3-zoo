@@ -26,8 +26,10 @@ class Laboratory:
         n_steps = [4,8,16]
         processes = 1
 
+        new_seeds = [814179323, 2594327367, 3632205932, 3203387808, 2619532351]
+
         commands = list()
-        for s in seeds:
+        for s in new_seeds:
             for n in n_steps:
 
                 builder = CommandBuilder("python train.py", "AntBulletEnv-v0", "tqc", s, n,

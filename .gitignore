@@ -19,6 +19,7 @@ hub
 *.mp4
 *.json
 env/
+*.out
 
 # Setuptools distribution and build folders.
 /dist/
