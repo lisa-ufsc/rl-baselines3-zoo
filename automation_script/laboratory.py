@@ -28,18 +28,6 @@ class Laboratory:
 
         new_seeds = [3632205932, 3203387808, 2619532351]
 
-        cb = CommandBuilder("python train.py", "HopperBulletEnv-v0", "tqc", 2594327367, 4,
-                                        "experiments/exploration", "experiments/exploration/tensorboard")
-        hopper_4 = CommandBuilderDirector(cb).generate()
-
-        cb = CommandBuilder("python train.py", "HopperBulletEnv-v0", "tqc", 2594327367, 8,
-                                        "experiments/exploration", "experiments/exploration/tensorboard")
-        hopper_8 = CommandBuilderDirector(cb).generate()
-        
-        cb = CommandBuilder("python train.py", "AntBulletEnv-v0", "tqc", 2594327367, 16,
-                                        "experiments/exploration", "experiments/exploration/tensorboard")
-        ant_16 = CommandBuilderDirector(cb).generate()
-
         cb = CommandBuilder("python train.py", "HopperBulletEnv-v0", "tqc", 2594327367, 16,
                                         "experiments/exploration", "experiments/exploration/tensorboard")
         hopper_16 = CommandBuilderDirector(cb).generate()
@@ -48,7 +36,7 @@ class Laboratory:
                                         "experiments/exploration", "experiments/exploration/tensorboard")
         half_16 = CommandBuilderDirector(cb).generate()
 
-        commands = [hopper_4, hopper_8, ant_16, hopper_16, half_16]
+        commands = [hopper_16, half_16]
         for s in new_seeds:
             for n in n_steps:
 
