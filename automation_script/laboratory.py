@@ -26,17 +26,33 @@ class Laboratory:
         n_steps = [4,8,16]
         processes = 1
 
-        new_seeds = [3632205932, 3203387808, 2619532351]
+        new_seeds = [3203387808, 2619532351]
 
-        cb = CommandBuilder("python train.py", "HopperBulletEnv-v0", "tqc", 2594327367, 16,
+        cb = CommandBuilder("python train.py", "AntBulletEnv-v0", "tqc", 3632205932, 8,
+                                        "experiments/exploration", "experiments/exploration/tensorboard")
+        ant_8 = CommandBuilderDirector(cb).generate()
+
+        cb = CommandBuilder("python train.py", "HopperBulletEnv-v0", "tqc", 3632205932, 8,
+                                        "experiments/exploration", "experiments/exploration/tensorboard")
+        hopper_8 = CommandBuilderDirector(cb).generate()
+
+        cb = CommandBuilder("python train.py", "HalfCheetahBulletEnv-v0", "tqc", 3632205932, 8,
+                                        "experiments/exploration", "experiments/exploration/tensorboard")
+        half_8 = CommandBuilderDirector(cb).generate()
+
+        cb = CommandBuilder("python train.py", "AntBulletEnv-v0", "tqc", 3632205932, 16,
+                                        "experiments/exploration", "experiments/exploration/tensorboard")
+        ant_16 = CommandBuilderDirector(cb).generate()
+
+        cb = CommandBuilder("python train.py", "HopperBulletEnv-v0", "tqc", 3632205932, 16,
                                         "experiments/exploration", "experiments/exploration/tensorboard")
         hopper_16 = CommandBuilderDirector(cb).generate()
 
-        cb = CommandBuilder("python train.py", "HalfCheetahBulletEnv-v0", "tqc", 2594327367, 16,
+        cb = CommandBuilder("python train.py", "HalfCheetahBulletEnv-v0", "tqc", 3632205932, 16,
                                         "experiments/exploration", "experiments/exploration/tensorboard")
         half_16 = CommandBuilderDirector(cb).generate()
 
-        commands = [hopper_16, half_16]
+        commands = [ant_8, hopper_8, half_8, ant_16, hopper_16, half_16]
         for s in new_seeds:
             for n in n_steps:
 
