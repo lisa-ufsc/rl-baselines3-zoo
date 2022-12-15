@@ -26,9 +26,13 @@ class Laboratory:
         n_steps = [4,8,16]
         processes = 1
 
-        new_seeds = [3203387808, 2619532351]
+        new_seeds = [2619532351]
 
-        commands = []
+        builder = CommandBuilder("python train.py", "HopperBulletEnv-v0", "tqc", 3203387808, 16,
+                                        "experiments/exploration", "experiments/exploration/tensorboard")
+        hopper_command = CommandBuilderDirector(builder).generate()
+
+        commands = [hopper_command]
         for s in new_seeds:
             for n in n_steps:
 
