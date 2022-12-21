@@ -1,5 +1,5 @@
 
-from automation_script.prompt import Prompt
+import os
 
 
 class AutomaticCommit:
@@ -16,16 +16,16 @@ class AutomaticCommit:
         self.__msg = new_msg
 
     def git_init(self):
-        Prompt().execute_command('git init')
+        os.system('git init')
 
     def git_add(self):
-        Prompt().execute_command('git add .')
+        os.system('git add .')
 
     def git_commit(self):
-        Prompt().execute_command(f'git commit -m "{self.msg}"')
+        os.system(f'git commit -m "{self.msg}"')
 
     def git_push(self):
-        Prompt().execute_command(f'git push')
+        os.system("git push")
 
     def update(self):
         self.git_init()

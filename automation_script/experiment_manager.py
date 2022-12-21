@@ -1,8 +1,9 @@
 
-from multiprocessing import Pool
+import sys
+from rl_zoo3.train import train
+from rl_zoo3.enjoy import enjoy
 
 from automation_script.chronometer import Chronometer
-from automation_script.prompt import Prompt
 from automation_script.logger_txt import Logger
 from automation_script.logger_email import MessageFactory, Dispatcher
 from automation_script.automatic_commit import AutomaticCommit
@@ -92,22 +93,18 @@ class ExperimentManager:
     def run_experiments(self):
         chronometer = Chronometer()
         
-        experiments = self._convert_experiments(self.experiments)
         dones_experiments = []
-        print(len(experiments))
-        [print(experiment, "\n\n") for experiment in experiments]
         chronometer.start_counting()
-        for exp in experiments:
+        for exp in self.experiments:
             try:
                 c = Chronometer()
-                processes = int(self.processes)
 
                 c.start_counting()
-                pool = Pool(processes=processes)
-                pool.map(Prompt().execute_command, exp)
+                sys.argv = exp[:]
+                train()
                 c.finish_counting()
 
-                dones_experiments.extend(exp)
+                dones_experiments.append(exp)
                 percentual = 100 * len(dones_experiments)/len(self.experiments)
                 msg_email = f"""<body>
                                     <p><b>Início:</b> {c.start_d}s</p>
@@ -122,12 +119,14 @@ class ExperimentManager:
 
         chronometer.finish_counting()
 
-        msg_txt = f"""Experimentos finalizados!
+        msg_txt = f"""
+Experimentos finalizados!
     - Inicio: {chronometer.start_d}
     - Fim: {chronometer.end_d}
     - Tempo de execucao: {chronometer.delta_d()}
     - Numero de comandos: {len(self.experiments)}
-    - Comandos executados:"""
+    - Comandos executados:
+    """
         for command in self.experiments:
             msg_txt += f"      {command}\n"
         self._notify_by_txt(msg_txt)

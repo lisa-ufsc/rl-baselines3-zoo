@@ -27,6 +27,8 @@ class Dispatcher:
             return "Failed to send. Receiver refused."
         except smtplib.SMTPServerDisconnected as e:
             return "Server disconnected"
+        except:
+            return "some error occurred!"
         return "Email sent!"
 
 class MessageFactory:
