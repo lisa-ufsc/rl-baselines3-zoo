@@ -11,12 +11,11 @@ from automation_script.automatic_commit import AutomaticCommit
 
 class ExperimentManager:
 
-    def __init__(self, email, key, msg, experiments, processes):
+    def __init__(self, email, key, msg, experiments):
         self.__email = email
         self.__key = key
         self.__msg = msg
         self.__experiments = experiments[:]
-        self.__processes = processes
 
     @property
     def email(self):
@@ -43,38 +42,12 @@ class ExperimentManager:
         self.__msg = new_msg
 
     @property
-    def processes(self):
-        return self.__processes
-
-    @processes.setter
-    def processes(self, new_processes):
-        self.__processes = new_processes
-
-    @property
     def experiments(self):
         return self.__experiments
 
     @experiments.setter
     def experiments(self, new_experiments):
         self.__experiments = new_experiments
-
-    def add_experiments(self, experiments):
-        self.__experiments.extend(experiments)
-
-    def _convert_experiments(self, experiments, num=10):
-        e = []
-        aux = []
-        cont = num
-        for experiment in experiments:
-            if cont == 0:
-                e.append(aux)
-                aux = []
-                cont = num
-                
-            aux.append(experiment)
-            cont -= 1
-        e.append(aux)
-        return e
 
     def _notify_by_email(self, msg):
         sender = self.email
@@ -100,8 +73,11 @@ class ExperimentManager:
                 c = Chronometer()
 
                 c.start_counting()
-                sys.argv = exp[:]
+                sys.argv = exp.train_command[:]
                 train()
+
+                sys.argv = exp.enjoy_command[:]
+                enjoy()
                 c.finish_counting()
 
                 dones_experiments.append(exp)
@@ -110,11 +86,13 @@ class ExperimentManager:
                                     <p><b>Início:</b> {c.start_d}s</p>
                                     <p><b>Fim:</b> {c.end_d}s</p>
                                     <p><b>Tempo de execução:</b> {c.delta_d()}</p>
-                                    <p><b>Percentual:</b>{percentual}</p>
+                                    <p><b>Percentual:</b>{percentual:.2f} %</p>
                                 </body>"""
                 self._notify_by_email(msg_email)
 
             except KeyboardInterrupt as e:
+                pass
+            except:
                 pass
 
         chronometer.finish_counting()

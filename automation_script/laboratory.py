@@ -1,7 +1,6 @@
 import argparse
 
-from automation_script.command_builder import CommandBuilder
-from automation_script.command_builder_director import CommandBuilderDirector
+from automation_script.experiment_factory import ExperimentFactory
 from automation_script.experiment_manager import ExperimentManager
 
 
@@ -23,34 +22,14 @@ class Laboratory:
         # Aqui que se altera os valores das seeds, dos n_steps,
         # dos processos simultaneos e do número de experimentos por agentes
         seeds = [3372438727, 896053610, 2784473964, 2183673577, 1843725486, 814179323, 2594327367, 3632205932, 3203387808, 2619532351]
-        n_steps = [4,8,16]
-        processes = 1
-
-        new_seeds = [2619532351]
-        new_steps = [8, 16]
-
-        commands = []
-        for s in new_seeds:
-            for n in new_steps:
-
-                builder = CommandBuilder("python train.py", "AntBulletEnv-v0", "tqc", s, n,
-                                        "experiments/exploration", "experiments/exploration/tensorboard")
-                ant_command = CommandBuilderDirector(builder).generate()
-
-                builder = CommandBuilder("python train.py", "HopperBulletEnv-v0", "tqc", s, n,
-                                        "experiments/exploration", "experiments/exploration/tensorboard")
-                hopper_command = CommandBuilderDirector(builder).generate()
-
-                builder = CommandBuilder("python train.py", "HalfCheetahBulletEnv-v0", "tqc", s, n,
-                                        "experiments/exploration", "experiments/exploration/tensorboard")
-                half_command = CommandBuilderDirector(builder).generate()
-
-                commands.append(ant_command)
-                commands.append(half_command)
-                commands.append(hopper_command)
+        steps = [128, 64, 32, 16, 8, 4, 2, 1]
+        envs  = ["AntBulletEnv-v0", "HopperBulletEnv-v0", "HalfCheetahBulletEnv-v0"]
+        algos = ["tqc"]
+        n = 1000000
+        experiments = ExperimentFactory().create(algos, envs, seeds, steps, n)
 
         self.__experiment_manager = ExperimentManager(args.email, args.key,
-                                                      " ".join(args.subject.split("_")), commands, processes)
+                                                      " ".join(args.subject.split("_")), experiments)
 
     def run(self):
         self.to_set_up()

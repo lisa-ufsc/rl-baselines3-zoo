@@ -1,6 +1,6 @@
 
 
-class Command:
+class Experiment:
 
     def __init__(self, train_command: list = [], enjoy_command: list = []) -> None:
         self.__train_command = train_command
