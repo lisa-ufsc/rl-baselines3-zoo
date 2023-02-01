@@ -72,6 +72,7 @@ class ExperimentManager:
         for i, exp in enumerate(self.experiments):
             try:
                 do_experiments = self.experiments[i:len(self.experiments) - 1]
+                msg_txt = ""
                 for command in do_experiments:
                     msg_txt += f"      {command}\n"
                 self._notify_by_txt(f"Checkpoint {i}")
