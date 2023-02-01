@@ -57,7 +57,7 @@ class ExperimentManager:
         body = msg
 
         message = MessageFactory().create(sender, receiver, subject, body)
-        Dispatcher(message, password).send()
+        print(Dispatcher(message, password).send())
 
     def _notify_by_txt(self, msg):
         logger = Logger("./automation_script/logs", "logs.txt")
@@ -74,10 +74,12 @@ class ExperimentManager:
 
                 c.start_counting()
                 sys.argv = exp.train_command[:]
-                train()
+                #train()
+                print(sys.argv) 
 
                 sys.argv = exp.enjoy_command[:]
-                enjoy()
+                #enjoy()
+                print(sys.argv)
                 c.finish_counting()
 
                 dones_experiments.append(exp)
@@ -91,7 +93,7 @@ class ExperimentManager:
                 self._notify_by_email(msg_email)
 
             except KeyboardInterrupt as e:
-                pass
+                exit(1)
             except:
                 pass
 

@@ -22,3 +22,6 @@ class Experiment:
     def enjoy_command(self, new_enjoy_command) -> None:
         self.__enjoy_command = new_enjoy_command
 
+    def __str__(self) -> str:
+        return f"train: {self.train_command}, enjoy: {self.enjoy_command}"
+

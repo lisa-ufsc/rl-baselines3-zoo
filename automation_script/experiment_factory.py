@@ -13,8 +13,8 @@ class ExperimentFactory:
                                         "--algo", f"{algo}",
                                         "--env", f"{env}",
                                         "--seed", f"{seed}",
-                                        "--log-folder", "experiments/exploration",
-                                        "--tensorboard-log", "experiments/exploration/tensorboard",
+                                        "--log-folder", f"experiments/exploration/seed_{seed}/n_steps_{step}",
+                                        "--tensorboard-log", f"experiments/exploration/tensorboard/seed_{seed}/n_steps_{step}",
                                         "--hyperparams", f"train_freq:{step}"]
                         experiment.train_command = train_command
 
