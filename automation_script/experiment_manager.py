@@ -66,20 +66,25 @@ class ExperimentManager:
     def run_experiments(self):
         chronometer = Chronometer()
         
+        do_experiments = []
         dones_experiments = []
         chronometer.start_counting()
-        for exp in self.experiments:
+        for i, exp in enumerate(self.experiments):
             try:
+                do_experiments = self.experiments[i:len(self.experiments) - 1]
+                for command in do_experiments:
+                    msg_txt += f"      {command}\n"
+                self._notify_by_txt(f"Checkpoint {i}")
+                self._notify_by_txt(msg_txt)
+
                 c = Chronometer()
 
                 c.start_counting()
                 sys.argv = exp.train_command[:]
-                #train()
-                print(sys.argv) 
+                #train() 
 
                 sys.argv = exp.enjoy_command[:]
                 #enjoy()
-                print(sys.argv)
                 c.finish_counting()
 
                 dones_experiments.append(exp)
