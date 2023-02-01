@@ -71,11 +71,11 @@ class ExperimentManager:
         chronometer.start_counting()
         for i, exp in enumerate(self.experiments):
             try:
-                do_experiments = self.experiments[i:len(self.experiments) - 1]
+                do_experiments = self.experiments[i:len(self.experiments)]
                 msg_txt = ""
                 for command in do_experiments:
                     msg_txt += f"      {command}\n"
-                self._notify_by_txt(f"Checkpoint {i}")
+                self._notify_by_txt(f"Checkpoint {i + 1}")
                 self._notify_by_txt(msg_txt)
 
                 c = Chronometer()
