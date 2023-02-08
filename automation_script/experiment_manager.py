@@ -72,9 +72,10 @@ class ExperimentManager:
         for i, exp in enumerate(self.experiments):
             try:
                 do_experiments = self.experiments[i:len(self.experiments)]
-                msg_txt = ""
+                msg_txt = "["
                 for command in do_experiments:
-                    msg_txt += f"      {command}\n"
+                    msg_txt += f"{command},\n"
+                msg_txt += "]"
                 self._notify_by_txt(f"Checkpoint {i + 1}")
                 self._notify_by_txt(msg_txt)
 
@@ -96,7 +97,9 @@ class ExperimentManager:
                                     <p><b>Tempo de execução:</b> {c.delta_d()}</p>
                                     <p><b>Percentual:</b>{percentual:.2f} %</p>
                                 </body>"""
+                
                 self._notify_by_email(msg_email)
+                AutomaticCommit(str(exp)).update()
 
             except KeyboardInterrupt as e:
                 exit(1)
