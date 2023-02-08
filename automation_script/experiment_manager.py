@@ -98,8 +98,8 @@ class ExperimentManager:
                                     <p><b>Percentual:</b>{percentual:.2f} %</p>
                                 </body>"""
                 
-                self._notify_by_email(msg_email)
-                AutomaticCommit(str(exp)).update()
+                #self._notify_by_email(msg_email)
+                #AutomaticCommit(str(exp)).update()
 
             except KeyboardInterrupt as e:
                 exit()
