@@ -102,7 +102,7 @@ class ExperimentManager:
                 AutomaticCommit(str(exp)).update()
 
             except KeyboardInterrupt as e:
-                exit(1)
+                exit()
             except:
                 pass
 
