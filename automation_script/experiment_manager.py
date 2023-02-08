@@ -70,6 +70,7 @@ class ExperimentManager:
         dones_experiments = []
         chronometer.start_counting()
         for i, exp in enumerate(self.experiments):
+            print(f"Iniciando experimento {exp}")
             try:
                 do_experiments = self.experiments[i:len(self.experiments)]
                 msg_txt = "["
