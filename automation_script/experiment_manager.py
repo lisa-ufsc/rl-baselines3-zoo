@@ -83,10 +83,10 @@ class ExperimentManager:
 
                 c.start_counting()
                 sys.argv = exp.train_command[:]
-                train() 
+                #train() 
 
                 sys.argv = exp.enjoy_command[:]
-                enjoy()
+                #enjoy()
                 c.finish_counting()
 
                 dones_experiments.append(exp)
@@ -98,8 +98,8 @@ class ExperimentManager:
                                     <p><b>Percentual:</b>{percentual:.2f} %</p>
                                 </body>"""
                 
-                self._notify_by_email(msg_email)
-                AutomaticCommit(str(exp)).update()
+                #self._notify_by_email(msg_email)
+                #AutomaticCommit(str(exp)).update()
 
             except KeyboardInterrupt as e:
                 exit()
