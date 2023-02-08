@@ -23,5 +23,5 @@ class Experiment:
         self.__enjoy_command = new_enjoy_command
 
     def __str__(self) -> str:
-        return "{'train':" + f"self.train_command" + ", 'enjoy':" + "self.enjoy_command" + "}"
+        return "{'train':" + f"{self.train_command}" + ", 'enjoy':" + "self.enjoy_command" + "}"
 
