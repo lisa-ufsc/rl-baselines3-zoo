@@ -70,8 +70,8 @@ class ExperimentManager:
         dones_experiments = []
         chronometer.start_counting()
         for i, exp in enumerate(self.experiments):
-            print(f"Iniciando experimento {exp}")
             try:
+                print(f"Iniciando experimento {exp}")
                 do_experiments = self.experiments[i:len(self.experiments)]
                 msg_txt = "["
                 for command in do_experiments:
@@ -103,9 +103,10 @@ class ExperimentManager:
                 AutomaticCommit(str(exp)).update()
 
             except KeyboardInterrupt as e:
-                exit()
+                print("Ocorreu algo de errado")
+                break
             except:
-                pass
+                print("Ocorreu algo de errado")
 
         chronometer.finish_counting()
 
