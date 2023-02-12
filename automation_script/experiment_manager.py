@@ -103,10 +103,10 @@ class ExperimentManager:
                 AutomaticCommit(str(exp)).update()
 
             except KeyboardInterrupt as e:
-                print("Ocorreu algo de errado")
+                print(e)
                 break
-            except:
-                print("Ocorreu algo de errado")
+            except Exception as e:
+                print(e)
 
         chronometer.finish_counting()
 
